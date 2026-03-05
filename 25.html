@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WatchTrack</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap');
+
+:root {
+  --bg:#0a0a0a; --surface:#111; --surface2:#1a1a1a; --border:#2a2a2a;
+  --accent:#e8ff00; --accent2:#00ffaa; --tg:#229ED9; --danger:#ff3b3b;
+  --text:#f0f0f0; --muted:#666;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:200;}
+.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--accent);}
+.tg-links{display:flex;gap:8px;}
+.tg-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:rgba(34,158,217,0.12);border:1px solid rgba(34,158,217,0.3);color:var(--tg);font-family:'IBM Plex Mono',monospace;font-size:11px;text-decoration:none;transition:all 0.2s;white-space:nowrap;}
+.tg-btn:hover{background:rgba(34,158,217,0.25);border-color:var(--tg);}
+.nav-tabs{display:flex;gap:4px;background:var(--surface);padding:4px;border-radius:8px;border:1px solid var(--border);}
+.nav-tab{padding:7px 18px;border-radius:6px;border:none;background:transparent;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;}
+.nav-tab.active{background:var(--accent);color:#000;font-weight:600;}
+
+/* PAGES */
+.page{display:none;}.page.active{display:block;}
+
+/* FORMS */
+.input-group{margin-bottom:14px;text-align:left;}
+.input-group label{display:block;font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.input-group input,.input-group textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.input-group input:focus,.input-group textarea:focus{border-color:var(--tg);}
+.input-group textarea{resize:vertical;min-height:72px;}
+.input-hint{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:5px;}
+.btn-primary{width:100%;background:var(--accent);color:#000;border:none;border-radius:8px;padding:12px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
+.btn-primary:hover{opacity:0.85;}
+
+/* LOGIN */
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:36px;max-width:420px;margin:70px auto;text-align:center;}
+.login-box h2{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:6px;}
+.login-box p{color:var(--muted);font-size:13px;margin-bottom:24px;}
+.tg-input-wrap{position:relative;}
+.tg-input-wrap .tg-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--tg);pointer-events:none;}
+.tg-input-wrap input{padding-left:28px;}
+
+/* VIEWER */
+.viewer-wrap{max-width:860px;margin:0 auto;padding:36px 20px;}
+.viewer-header{margin-bottom:20px;}
+.viewer-header h1{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:2px;line-height:1;}
+.viewer-header p{color:var(--muted);font-size:12px;margin-top:6px;font-family:'IBM Plex Mono',monospace;}
+
+.video-container{position:relative;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+.video-container iframe{width:100%;aspect-ratio:16/9;display:block;}
+.player-overlay{position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;cursor:not-allowed;background:transparent;}
+.overlay-tip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.82);color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:8px 16px;border-radius:8px;border:1px solid var(--accent);pointer-events:none;opacity:0;transition:opacity 0.3s;white-space:nowrap;}
+.player-overlay:hover .overlay-tip{opacity:1;}
+
+/* PROGRESS */
+.progress-wrap{margin-top:14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;}
+.progress-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.progress-label strong{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--accent);}
+.progress-bar-bg{height:7px;background:var(--surface2);border-radius:4px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:4px;width:0%;transition:width 0.5s ease;}
+.status-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.5px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);}
+.badge.ok{border-color:var(--accent2);color:var(--accent2);background:rgba(0,255,170,0.07);}
+.badge.warn{border-color:var(--danger);color:var(--danger);background:rgba(255,59,59,0.07);}
+.badge .dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+
+/* CONFIRM */
+.confirm-btn{display:none;width:100%;margin-top:14px;background:var(--accent2);color:#000;border:none;border-radius:8px;padding:14px;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;cursor:pointer;transition:all 0.2s;animation:pulse-in 0.4s ease;}
+.confirm-btn:hover{opacity:0.85;transform:translateY(-1px);}
+@keyframes pulse-in{from{transform:scale(0.95);opacity:0;}to{transform:scale(1);opacity:1;}}
+.already-done{margin-top:14px;background:rgba(0,255,170,0.08);border:1px solid var(--accent2);border-radius:8px;padding:14px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent2);}
+
+/* COMMENTS */
+.social-section{margin-top:24px;}
+.comments-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.comments-header{padding:14px 18px;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;}
+.comments-header span{color:var(--text);font-weight:600;}
+.comment-form{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:10px;}
+.comment-form textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:70px;transition:border-color 0.2s;}
+.comment-form textarea:focus{border-color:var(--tg);}
+.comment-form-row{display:flex;justify-content:flex-end;}
+.btn-comment{padding:8px 20px;background:var(--tg);color:#fff;border:none;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
+.btn-comment:hover{opacity:0.85;}
+.comments-list{max-height:420px;overflow-y:auto;}
+.comment-item{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;gap:12px;animation:fade-in 0.3s ease;}
+@keyframes fade-in{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.comment-item:last-child{border-bottom:none;}
+.comment-avatar{width:36px;height:36px;border-radius:50%;background:rgba(34,158,217,0.15);border:1px solid rgba(34,158,217,0.3);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--tg);flex-shrink:0;}
+.comment-body{flex:1;}
+.comment-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
+.comment-name{font-size:13px;font-weight:600;color:var(--tg);font-family:'IBM Plex Mono',monospace;}
+.comment-time{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
+.comment-verified{font-size:10px;color:var(--accent2);font-family:'IBM Plex Mono',monospace;}
+.comment-text{font-size:13px;line-height:1.65;color:#ccc;}
+.no-comments{padding:32px;text-align:center;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;}
+
+/* ADMIN */
+.admin-wrap{max-width:1100px;margin:0 auto;padding:36px 20px;}
+.admin-login-screen{display:flex;align-items:center;justify-content:center;min-height:60vh;}
+.admin-login-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:40px;width:340px;text-align:center;}
+.admin-login-box h2{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;margin-bottom:6px;}
+.admin-login-box p{color:var(--muted);font-size:12px;margin-bottom:24px;font-family:'IBM Plex Mono',monospace;}
+.admin-login-error{color:var(--danger);font-family:'IBM Plex Mono',monospace;font-size:12px;margin-bottom:12px;display:none;}
+.admin-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;}
+.admin-header h1{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:2px;line-height:1;}
+.admin-header p{color:var(--muted);font-size:11px;font-family:'IBM Plex Mono',monospace;margin-top:4px;}
+.btn-danger{padding:8px 16px;background:transparent;border:1px solid var(--danger);color:var(--danger);border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.btn-danger:hover{background:var(--danger);color:#fff;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);}
+.stat-card:nth-child(2)::before{background:var(--accent2);}
+.stat-card:nth-child(3)::before{background:#ff9500;}
+.stat-card:nth-child(4)::before{background:var(--tg);}
+.stat-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.stat-value{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:1px;line-height:1;}
+.stat-sub{font-size:10px;color:var(--muted);margin-top:4px;font-family:'IBM Plex Mono',monospace;}
+.admin-tabs{display:flex;gap:4px;margin-bottom:16px;}
+.admin-tab{padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.15s;text-transform:uppercase;}
+.admin-tab.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600;}
+.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+.filter-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.5px;cursor:pointer;transition:all 0.15s;text-transform:uppercase;}
+.filter-btn.active,.filter-btn:hover{background:var(--accent);color:#000;border-color:var(--accent);}
+.search-input{margin-left:auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 14px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;outline:none;width:200px;transition:border-color 0.2s;}
+.search-input:focus{border-color:var(--accent);}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:28px;}
+table{width:100%;border-collapse:collapse;}
+thead tr{border-bottom:1px solid var(--border);background:var(--surface2);}
+thead th{padding:11px 14px;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:600;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--surface2);}
+td{padding:12px 14px;font-size:13px;}
+.td-tg{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--tg);font-weight:600;}
+.td-mono{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+.mini-bar{height:4px;background:var(--border);border-radius:2px;margin-top:4px;overflow:hidden;}
+.mini-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent2),var(--accent));}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:12px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
+.tag-done{background:rgba(0,255,170,0.12);color:var(--accent2);border:1px solid rgba(0,255,170,0.25);}
+.tag-watch{background:rgba(232,255,0,0.1);color:var(--accent);border:1px solid rgba(232,255,0,0.2);}
+.admin-comments-list{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.admin-comment-item{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);}
+.admin-comment-item:last-child{border-bottom:none;}
+.btn-delete{background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:'IBM Plex Mono',monospace;transition:all 0.15s;flex-shrink:0;}
+.btn-delete:hover{border-color:var(--danger);color:var(--danger);}
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;}
+.empty-state .big{font-size:36px;margin-bottom:10px;opacity:0.3;}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--accent2);color:#000;padding:11px 18px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;transform:translateY(80px);opacity:0;transition:all 0.3s ease;z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+@media(max-width:700px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .nav{padding:10px 14px;flex-wrap:wrap;gap:8px;}
+  .tg-links{display:none;}
+  .viewer-wrap,.admin-wrap{padding:16px 12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <div class="nav-logo">WATCHTRACK</div>
+    <div class="tg-links">
+      <a class="tg-btn" href="https://t.me/voperggdrop" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.069-2.018 9.509c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.48 14.898l-2.946-.924c-.64-.203-.654-.64.136-.948l11.491-4.43c.532-.194.998.131.401 2.473z"/></svg>
+        GGDROP ПРОМОКОДЫ
+      </a>
+      <a class="tg-btn" href="https://t.me/nipggstandoff" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.069-2.018 9.509c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.48 14.898l-2.946-.924c-.64-.203-.654-.64.136-.948l11.491-4.43c.532-.194.998.131.401 2.473z"/></svg>
+        GGSTANDOFF ПРОМОКОДЫ
+      </a>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('viewer',this)">Просмотр</button>
+    <button class="nav-tab" onclick="showPage('admin',this)">Админ</button>
+  </div>
+</nav>
+
+<!-- VIEWER PAGE -->
+<div id="page-viewer" class="page active">
+  <div class="viewer-wrap">
+
+    <!-- LOGIN -->
+    <div id="login-section">
+      <div class="login-box">
+        <h2>Войдите</h2>
+        <p>Введите свой Telegram для отслеживания просмотра</p>
+        <div class="input-group">
+          <label>Ваш Telegram</label>
+          <div class="tg-input-wrap">
+            <span class="tg-prefix">@</span>
+            <input type="text" id="username-input" placeholder="username" maxlength="32"
+              onkeydown="if(event.key==='Enter')startViewer()"
+              oninput="this.value=this.value.replace(/[^a-zA-Z0-9_]/g,'')"/>
+          </div>
+          <div class="input-hint">Только латиница, цифры и _ без @</div>
+        </div>
+        <button class="btn-primary" onclick="startViewer()">Начать просмотр</button>
+      </div>
+    </div>
+
+    <!-- VIDEO -->
+    <div id="video-section" style="display:none">
+      <div class="viewer-header">
+        <h1 id="greeting-title">Привет!</h1>
+        <p>Смотрите видео без перемоток. Кнопка подтверждения появится после просмотра.</p>
+      </div>
+
+      <div class="video-container">
+        <div id="player"></div>
+        <div class="player-overlay"><div class="overlay-tip">⛔ Перемотка и пауза отключены</div></div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Просмотрено</span>
+          <strong id="pct-display">0%</strong>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+        <div class="status-row">
+          <div class="badge" id="badge-watching"><span class="dot"></span> Ожидание</div>
+          <div class="badge" id="badge-seek"><span class="dot"></span> Перемоток: 0</div>
+          <div class="badge" id="badge-pauses"><span class="dot"></span> Пауз: 0</div>
+        </div>
+      </div>
+
+      <button class="confirm-btn" id="confirm-btn" onclick="confirmWatch()">✓ ПОДТВЕРДИТЬ ПРОСМОТР</button>
+      <div class="already-done" id="already-done" style="display:none">✓ Вы уже подтвердили просмотр этого видео</div>
+
+      <!-- COMMENTS -->
+      <div class="social-section">
+        <div class="comments-box">
+          <div class="comments-header">
+            Комментарии <span id="comment-count-label">0</span>
+          </div>
+          <div class="comment-form">
+            <textarea id="comment-input" placeholder="Напишите комментарий..." maxlength="500"></textarea>
+            <div class="comment-form-row">
+              <button class="btn-comment" onclick="postComment()">Отправить</button>
+            </div>
+          </div>
+          <div class="comments-list" id="comments-list">
+            <div class="no-comments">Будьте первым! Оставьте комментарий.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PAGE -->
+<div id="page-admin" class="page">
+  <div class="admin-wrap">
+
+    <!-- ADMIN LOGIN -->
+    <div id="admin-login-screen" class="admin-login-screen">
+      <div class="admin-login-box">
+        <h2>АДМИНКА</h2>
+        <p>Введите пароль для доступа</p>
+        <div class="admin-login-error" id="admin-login-error">Неверный пароль</div>
+        <div class="input-group">
+          <label>Пароль</label>
+          <input type="password" id="admin-pass-input" placeholder="••••••" onkeydown="if(event.key==='Enter')checkAdminPass()"/>
+        </div>
+        <button class="btn-primary" onclick="checkAdminPass()">Войти</button>
+      </div>
+    </div>
+
+    <!-- ADMIN CONTENT -->
+    <div id="admin-content" style="display:none">
+      <div class="admin-header">
+        <div>
+          <h1>АНАЛИТИКА</h1>
+          <p id="admin-updated">Обновляется в реальном времени</p>
+        </div>
+        <button class="btn-danger" onclick="clearData()">Очистить данные</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Всего зрителей</div><div class="stat-value" id="stat-total">0</div><div class="stat-sub">уникальных аккаунтов</div></div>
+        <div class="stat-card"><div class="stat-label">Досмотрели</div><div class="stat-value" id="stat-completed">0</div><div class="stat-sub">≥ 95% без перемоток</div></div>
+        <div class="stat-card"><div class="stat-label">Средний % просмотра</div><div class="stat-value" id="stat-avg">0%</div><div class="stat-sub">по всем зрителям</div></div>
+        <div class="stat-card"><div class="stat-label">Комментариев</div><div class="stat-value" id="stat-comments">0</div><div class="stat-sub">всего написано</div></div>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('viewers',this)">Зрители</button>
+        <button class="admin-tab" onclick="switchAdminTab('comments',this)">Комментарии</button>
+      </div>
+
+      <!-- VIEWERS TABLE -->
+      <div id="admin-tab-viewers">
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterTable('all',this)">Все</button>
+          <button class="filter-btn" onclick="filterTable('completed',this)">Досмотрели</button>
+          <button class="filter-btn" onclick="filterTable('watching',this)">Смотрят</button>
+          <button class="filter-btn" onclick="filterTable('seeked',this)">Перемотки</button>
+          <input class="search-input" id="search-input" type="text" placeholder="Поиск по @username..." oninput="renderTable()"/>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Telegram</th>
+                <th>Статус</th>
+                <th>Просмотрено</th>
+                <th>Перемотки</th>
+                <th>Пауз</th>
+                <th>Начал</th>
+                <th>Обновлён</th>
+              </tr>
+            </thead>
+            <tbody id="admin-tbody"></tbody>
+          </table>
+          <div class="empty-state" id="empty-state" style="display:none">
+            <div class="big">📭</div>Нет данных о просмотрах.
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMENTS TABLE -->
+      <div id="admin-tab-comments" style="display:none">
+        <div class="admin-comments-list" id="admin-comments-list">
+          <div class="empty-state"><div class="big">💬</div>Комментариев пока нет.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ CONFIG ══
+const VIDEO_ID       = 'dQw4w9WgXcQ'; // <-- ВСТАВЬТЕ СВОЙ YOUTUBE VIDEO ID
+const REQUIRED_PCT   = 95;
+const ADMIN_PASSWORD = '1234';         // <-- СМЕНИТЕ ПАРОЛЬ АДМИНКИ
+
+/*
+  КАК ЗАЛИТЬ НА GITHUB PAGES:
+  1. github.com → New repository → назовите: username.github.io
+  2. Загрузите этот файл как index.html (Add file → Upload files)
+  3. Settings → Pages → main → / (root) → Save
+  4. Через 1-2 минуты сайт готов!
+*/
+
+// ══ STORAGE ══
+const LS_V='wt_viewers', LS_C='wt_comments';
+const getData=()=>{try{return JSON.parse(localStorage.getItem(LS_V)||'{}')}catch{return{}}};
+const saveData=d=>localStorage.setItem(LS_V,JSON.stringify(d));
+const getComments=()=>{try{return JSON.parse(localStorage.getItem(LS_C)||'[]')}catch{return[]}};
+const saveComments=c=>localStorage.setItem(LS_C,JSON.stringify(c));
+
+// ══ STATE ══
+let currentUser=null, player=null, watchedSecs=new Set();
+let seekCount=0, pauseCount=0, lastTime=0, isPlaying=false, tickInterval=null;
+let adminUnlocked=false, adminActiveTab='viewers', currentFilter='all';
+
+// ══ NAV ══
+function showPage(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(name==='admin'&&adminUnlocked)renderAdmin();
+}
+
+// ══ LOGIN ══
+function startViewer(){
+  let name=document.getElementById('username-input').value.trim().replace(/^@/,'');
+  if(!name||name.length<2){showToast('Введите корректный @username');return;}
+  currentUser='@'+name;
+  document.getElementById('login-section').style.display='none';
+  document.getElementById('video-section').style.display='block';
+  document.getElementById('greeting-title').textContent='Привет, @'+name+'!';
+  const data=getData();
+  if(data[currentUser]?.confirmed){document.getElementById('already-done').style.display='block';}
+  updateUserRecord({name:currentUser,started:new Date().toISOString()});
+  loadYTPlayer();
+  renderComments();
+}
+
+// ══ YOUTUBE ══
+function loadYTPlayer(){
+  if(window.YT&&window.YT.Player){initPlayer();}
+  else{const t=document.createElement('script');t.src='https://www.youtube.com/iframe_api';document.head.appendChild(t);window.onYouTubeIframeAPIReady=initPlayer;}
+}
+function initPlayer(){
+  player=new YT.Player('player',{videoId:VIDEO_ID,playerVars:{rel:0,modestbranding:1},events:{onStateChange}});
+}
+function onStateChange(e){
+  if(e.data===YT.PlayerState.PLAYING){isPlaying=true;setBadge('badge-watching','Смотрит','ok');if(!tickInterval)tickInterval=setInterval(tick,1000);}
+  if(e.data===YT.PlayerState.PAUSED){isPlaying=false;pauseCount++;setBadge('badge-watching','Пауза','');setBadge('badge-pauses','Пауз: '+pauseCount,'');saveProgress();}
+  if(e.data===YT.PlayerState.ENDED){isPlaying=false;clearInterval(tickInterval);tickInterval=null;setBadge('badge-watching','Завершено','ok');saveProgress();checkCompletion();}
+}
+function tick(){
+  if(!player||!isPlaying)return;
+  const cur=Math.floor(player.getCurrentTime());
+  const dur=Math.floor(player.getDuration());
+  if(cur-lastTime>3){seekCount++;setBadge('badge-seek','Перемоток: '+seekCount,'warn');updateUserRecord({seeks:seekCount});}
+  else{watchedSecs.add(cur);}
+  lastTime=cur;
+  const pct=dur>0?Math.round((watchedSecs.size/dur)*100):0;
+  document.getElementById('pct-display').textContent=pct+'%';
+  document.getElementById('progress-fill').style.width=Math.min(pct,100)+'%';
+  if(cur%5===0)saveProgress();
+  checkCompletion();
+}
+function checkCompletion(){
+  if(!player)return;
+  const dur=Math.floor(player.getDuration());
+  if(!dur)return;
+  const pct=Math.round((watchedSecs.size/dur)*100);
+  if(getData()[currentUser]?.confirmed)return;
+  if(pct>=REQUIRED_PCT)document.getElementById('confirm-btn').style.display='block';
+}
+function saveProgress(){
+  if(!player||!currentUser)return;
+  const dur=Math.floor(player.getDuration());
+  const pct=dur>0?Math.round((watchedSecs.size/dur)*100):0;
+  updateUserRecord({pct:Math.min(pct,100),seeks:seekCount,pauses:pauseCount,lastSeen:new Date().toISOString()});
+}
+function confirmWatch(){
+  updateUserRecord({confirmed:true,confirmedAt:new Date().toISOString()});
+  document.getElementById('confirm-btn').style.display='none';
+  document.getElementById('already-done').style.display='block';
+  showToast('✓ Просмотр подтверждён!');
+}
+function updateUserRecord(fields){
+  const data=getData();
+  data[currentUser]=Object.assign(data[currentUser]||{name:currentUser},fields);
+  saveData(data);
+}
+function setBadge(id,text,type){
+  const el=document.getElementById(id);
+  el.className='badge'+(type?' '+type:'');
+  el.innerHTML='<span class="dot"></span> '+text;
+}
+document.addEventListener('keydown',e=>{
+  const inV=document.getElementById('video-section')?.style.display!=='none';
+  if(inV&&['Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.code))e.preventDefault();
+});
+
+// ══ COMMENTS ══
+function postComment(){
+  if(!currentUser){showToast('Сначала войдите!');return;}
+  const text=document.getElementById('comment-input').value.trim();
+  if(!text||text.length<2){showToast('Напишите комментарий!');return;}
+  const comments=getComments();
+  comments.unshift({id:Date.now(),name:currentUser,text,time:new Date().toISOString()});
+  saveComments(comments);
+  document.getElementById('comment-input').value='';
+  renderComments();
+  showToast('Комментарий добавлен!');
+}
+function renderComments(){
+  const comments=getComments();
+  const list=document.getElementById('comments-list');
+  const lbl=document.getElementById('comment-count-label');
+  if(lbl)lbl.textContent=comments.length;
+  if(!comments.length){list.innerHTML='<div class="no-comments">Будьте первым! Оставьте комментарий.</div>';return;}
+  const data=getData();
+  list.innerHTML=comments.map(c=>{
+    const init=(c.name||'@')[1]?.toUpperCase()||'T';
+    const t=new Date(c.time).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const verified=data[c.name]?.confirmed;
+    return `<div class="comment-item">
+      <div class="comment-avatar">${esc(init)}</div>
+      <div class="comment-body">
+        <div class="comment-meta">
+          <span class="comment-name">${esc(c.name)}</span>
+          ${verified?'<span class="comment-verified">✓ досмотрел</span>':''}
+          <span class="comment-time">${t}</span>
+        </div>
+        <div class="comment-text">${esc(c.text)}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══ ADMIN ══
+function checkAdminPass(){
+  const val=document.getElementById('admin-pass-input').value;
+  if(val===ADMIN_PASSWORD){
+    adminUnlocked=true;
+    document.getElementById('admin-login-screen').style.display='none';
+    document.getElementById('admin-content').style.display='block';
+    renderAdmin();
+  } else {
+    document.getElementById('admin-login-error').style.display='block';
+    document.getElementById('admin-pass-input').value='';
+  }
+}
+function switchAdminTab(tab,btn){
+  adminActiveTab=tab;
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('admin-tab-viewers').style.display=tab==='viewers'?'block':'none';
+  document.getElementById('admin-tab-comments').style.display=tab==='comments'?'block':'none';
+  if(tab==='comments')renderAdminComments();
+}
+function renderAdmin(){
+  const data=getData(), records=Object.values(data);
+  const comments=getComments();
+  document.getElementById('stat-total').textContent=records.length;
+  document.getElementById('stat-completed').textContent=records.filter(r=>r.confirmed).length;
+  document.getElementById('stat-avg').textContent=records.length?Math.round(records.reduce((s,r)=>s+(r.pct||0),0)/records.length)+'%':'0%';
+  document.getElementById('stat-comments').textContent=comments.length;
+  document.getElementById('admin-updated').textContent='Обновлено: '+new Date().toLocaleTimeString('ru');
+  renderTable();
+  if(adminActiveTab==='comments')renderAdminComments();
+}
+function renderTable(){
+  const data=getData();
+  let records=Object.values(data);
+  const search=(document.getElementById('search-input')?.value||'').toLowerCase();
+  if(search)records=records.filter(r=>r.name?.toLowerCase().includes(search));
+  if(currentFilter==='completed')records=records.filter(r=>r.confirmed);
+  else if(currentFilter==='watching')records=records.filter(r=>!r.confirmed&&(r.pct||0)>0);
+  else if(currentFilter==='seeked')records=records.filter(r=>r.seeks>0);
+  const tbody=document.getElementById('admin-tbody');
+  const empty=document.getElementById('empty-state');
+  if(!records.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  records.sort((a,b)=>new Date(b.lastSeen||b.started||0)-new Date(a.lastSeen||a.started||0));
+  tbody.innerHTML=records.map((r,i)=>{
+    const pct=r.pct||0;
+    const status=r.confirmed?`<span class="tag tag-done">✓ Досмотрел</span>`:pct>0?`<span class="tag tag-watch">▶ Смотрит</span>`:`<span class="tag">— Начал</span>`;
+    const sk=r.seeks>0?`<span style="color:var(--danger)">${r.seeks}</span>`:`<span style="color:var(--accent2)">0</span>`;
+    const s=r.started?new Date(r.started).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    const u=r.lastSeen?new Date(r.lastSeen).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    return `<tr>
+      <td class="td-mono">${i+1}</td>
+      <td class="td-tg">${esc(r.name||'—')}</td>
+      <td>${status}</td>
+      <td style="min-width:130px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:${pct>=95?'var(--accent2)':pct>=50?'var(--accent)':'var(--muted)'}">${pct}%</span>
+        <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
+      </td>
+      <td>${sk}</td>
+      <td class="td-mono">${r.pauses||0}</td>
+      <td class="td-mono">${s}</td>
+      <td class="td-mono">${u}</td>
+    </tr>`;
+  }).join('');
+}
+function renderAdminComments(){
+  const comments=getComments();
+  const data=getData();
+  const box=document.getElementById('admin-comments-list');
+  if(!comments.length){box.innerHTML='<div class="empty-state"><div class="big">💬</div>Комментариев пока нет.</div>';return;}
+  box.innerHTML=comments.map(c=>{
+    const t=new Date(c.time).toLocaleString('ru',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const verified=data[c.name]?.confirmed;
+    return `<div class="admin-comment-item">
+      <div style="width:36px;height:36px;border-radius:50%;background:rgba(34,158,217,0.15);border:1px solid rgba(34,158,217,0.3);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--tg);flex-shrink:0">${esc((c.name||'@T')[1]?.toUpperCase()||'T')}</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">
+          <span style="font-weight:600;font-size:13px;color:var(--tg);font-family:'IBM Plex Mono',monospace">${esc(c.name)}</span>
+          ${verified?'<span style="font-size:10px;color:var(--accent2);font-family:\'IBM Plex Mono\',monospace">✓ досмотрел</span>':''}
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)">${t}</span>
+        </div>
+        <div style="font-size:13px;color:#ccc;line-height:1.65;word-break:break-word">${esc(c.text)}</div>
+      </div>
+      <button class="btn-delete" onclick="deleteComment(${c.id})">Удалить</button>
+    </div>`;
+  }).join('');
+}
+function deleteComment(id){
+  if(!confirm('Удалить комментарий?'))return;
+  saveComments(getComments().filter(c=>c.id!==id));
+  renderAdminComments();
+  renderComments();
+  showToast('Комментарий удалён');
+}
+function filterTable(type,btn){
+  currentFilter=type;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+function clearData(){
+  if(!confirm('Удалить ВСЕ данные (просмотры и комментарии)?'))return;
+  [LS_V,LS_C].forEach(k=>localStorage.removeItem(k));
+  renderAdmin();
+  showToast('Все данные удалены');
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+setInterval(()=>{if(document.getElementById('page-admin').classList.contains('active')&&adminUnlocked)renderAdmin();},10000);
+</script>
+</body>
+</html>
