@@ -55,7 +55,8 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 
 .video-container{position:relative;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
 .video-container iframe{width:100%;aspect-ratio:16/9;display:block;}
-.player-overlay{position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;cursor:not-allowed;background:transparent;}
+.player-overlay{position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;cursor:not-allowed;background:transparent;display:none;}
+.player-overlay.active{display:block;}
 .overlay-tip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.82);color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:8px 16px;border-radius:8px;border:1px solid var(--accent);pointer-events:none;opacity:0;transition:opacity 0.3s;white-space:nowrap;}
 .player-overlay:hover .overlay-tip{opacity:1;}
 
@@ -403,7 +404,13 @@ function initPlayer(){
   player=new YT.Player('player',{videoId:VIDEO_ID,playerVars:{rel:0,modestbranding:1},events:{onStateChange}});
 }
 function onStateChange(e){
-  if(e.data===YT.PlayerState.PLAYING){isPlaying=true;setBadge('badge-watching','Смотрит','ok');if(!tickInterval)tickInterval=setInterval(tick,1000);}
+  if(e.data===YT.PlayerState.PLAYING){
+    isPlaying=true;
+    setBadge('badge-watching','Смотрит','ok');
+    // Включаем блокировку только после первого запуска
+    document.getElementById('player-overlay').classList.add('active');
+    if(!tickInterval)tickInterval=setInterval(tick,1000);
+  }
   if(e.data===YT.PlayerState.PAUSED){isPlaying=false;pauseCount++;setBadge('badge-watching','Пауза','');setBadge('badge-pauses','Пауз: '+pauseCount,'');saveProgress();}
   if(e.data===YT.PlayerState.ENDED){isPlaying=false;clearInterval(tickInterval);tickInterval=null;setBadge('badge-watching','Завершено','ok');saveProgress();checkCompletion();}
 }
@@ -604,5 +611,4 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 setInterval(()=>{if(document.getElementById('page-admin').classList.contains('active')&&adminUnlocked)renderAdmin();},10000);
 </script>
 </body>
-
 </html>
