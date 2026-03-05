@@ -10,7 +10,7 @@
 :root {
   --bg:#0a0a0a; --surface:#111; --surface2:#1a1a1a; --border:#2a2a2a;
   --accent:#e8ff00; --accent2:#00ffaa; --tg:#229ED9; --danger:#ff3b3b;
-  --text:#f0f0f0; --muted:#666;
+  --text:#f0f0f0; --muted:#666; --yt:#FF0000;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;}
@@ -72,6 +72,41 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 @keyframes pulse-in{from{transform:scale(0.95);opacity:0;}to{transform:scale(1);opacity:1;}}
 .already-done{margin-top:14px;background:rgba(0,255,170,0.08);border:1px solid var(--accent2);border-radius:8px;padding:14px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent2);}
 
+/* ══ YOUTUBE BOOST BLOCK ══ */
+.yt-boost-block{margin-top:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.yt-boost-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.yt-boost-header svg{flex-shrink:0;}
+.yt-boost-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:var(--yt);}
+.yt-boost-subtitle{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:1px;letter-spacing:0.5px;}
+.yt-boost-body{padding:16px 18px;}
+.yt-boost-desc{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:14px;border-left:2px solid var(--yt);padding-left:12px;}
+.yt-boost-desc b{color:var(--text);}
+.yt-actions-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.yt-action-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.2s;text-align:center;}
+.yt-action-btn:hover{border-color:var(--yt);color:var(--text);background:rgba(255,0,0,0.07);transform:translateY(-2px);}
+.yt-action-btn.done{border-color:var(--accent2);color:var(--accent2);background:rgba(0,255,170,0.07);}
+.yt-action-btn .icon{font-size:22px;line-height:1;}
+.yt-action-btn .lbl{font-size:9px;}
+.yt-action-btn .check{display:none;font-size:16px;}
+.yt-action-btn.done .icon{display:none;}
+.yt-action-btn.done .check{display:block;}
+.yt-comment-section{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.yt-comment-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.yt-comment-ideas{display:flex;flex-direction:column;gap:6px;}
+.yt-comment-idea{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;}
+.yt-comment-idea:hover{border-color:var(--yt);background:rgba(255,0,0,0.05);}
+.yt-comment-idea .idea-text{font-size:12px;color:var(--text);line-height:1.5;flex:1;}
+.yt-comment-idea .copy-icon{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);flex-shrink:0;transition:color 0.2s;}
+.yt-comment-idea:hover .copy-icon{color:var(--yt);}
+.yt-open-comments{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;padding:10px;background:rgba(255,0,0,0.08);border:1px solid rgba(255,0,0,0.25);border-radius:8px;color:var(--yt);font-family:'IBM Plex Mono',monospace;font-size:11px;text-decoration:none;transition:all 0.2s;font-weight:600;}
+.yt-open-comments:hover{background:rgba(255,0,0,0.16);}
+.yt-progress-row{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.yt-prog-item{flex:1;text-align:center;padding:10px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;}
+.yt-prog-item .prog-val{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--accent);}
+.yt-prog-item .prog-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;margin-top:2px;}
+.yt-prog-item.prog-done .prog-val{color:var(--accent2);}
+
+/* ══ COMMENTS (SITE) ══ */
 .social-section{margin-top:24px;}
 .comments-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .comments-header{padding:14px 18px;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;}
@@ -95,6 +130,7 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .comment-text{font-size:13px;line-height:1.65;color:#ccc;}
 .no-comments{padding:32px;text-align:center;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;}
 
+/* ══ ADMIN ══ */
 .admin-wrap{max-width:1100px;margin:0 auto;padding:36px 20px;}
 .admin-login-screen{display:flex;align-items:center;justify-content:center;min-height:60vh;}
 .admin-login-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:40px;width:340px;text-align:center;}
@@ -149,11 +185,15 @@ td{padding:12px 14px;font-size:13px;}
 .toast.show{transform:translateY(0);opacity:1;}
 .loading{text-align:center;padding:20px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;}
 
+/* stats inside admin for yt actions */
+.tag-yt{background:rgba(255,0,0,0.1);color:var(--yt);border:1px solid rgba(255,0,0,0.2);}
+
 @media(max-width:700px){
   .stats-grid{grid-template-columns:repeat(2,1fr);}
   .nav{padding:10px 14px;flex-wrap:wrap;gap:8px;}
   .tg-links{display:none;}
   .viewer-wrap,.admin-wrap{padding:16px 12px;}
+  .yt-actions-grid{grid-template-columns:1fr 1fr 1fr;}
 }
 </style>
 </head>
@@ -224,9 +264,70 @@ td{padding:12px 14px;font-size:13px;}
       </div>
       <button class="confirm-btn" id="confirm-btn" onclick="confirmWatch()">✓ ПОДТВЕРДИТЬ ПРОСМОТР</button>
       <div class="already-done" id="already-done" style="display:none">✓ Вы уже подтвердили просмотр этого видео</div>
+
+      <!-- ══ YOUTUBE BOOST BLOCK ══ -->
+      <div class="yt-boost-block" id="yt-boost-block" style="display:none">
+        <div class="yt-boost-header">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          <div>
+            <div class="yt-boost-title">ПОДДЕРЖИ ВИДЕО НА YOUTUBE</div>
+            <div class="yt-boost-subtitle">Помоги алгоритму продвинуть видео — займёт 1 минуту</div>
+          </div>
+        </div>
+        <div class="yt-boost-body">
+          <div class="yt-boost-desc">
+            YouTube продвигает видео только по <b>реальным сигналам на своей платформе</b>: лайки, комментарии, подписки. Просмотр здесь зачтён — теперь сделай 3 действия на YouTube и помоги каналу расти.
+          </div>
+
+          <div class="yt-actions-grid">
+            <a class="yt-action-btn" id="yt-btn-like" href="https://www.youtube.com/watch?v=oIBoA_MT_s8" target="_blank" rel="noopener" onclick="markYtAction('like',this)">
+              <span class="icon">👍</span>
+              <span class="check">✅</span>
+              <span class="lbl">ЛАЙК</span>
+            </a>
+            <a class="yt-action-btn" id="yt-btn-sub" href="https://www.youtube.com/watch?v=oIBoA_MT_s8" target="_blank" rel="noopener" onclick="markYtAction('sub',this)">
+              <span class="icon">🔔</span>
+              <span class="check">✅</span>
+              <span class="lbl">ПОДПИСКА</span>
+            </a>
+            <a class="yt-action-btn" id="yt-btn-comment" href="https://www.youtube.com/watch?v=oIBoA_MT_s8#comments" target="_blank" rel="noopener" onclick="markYtAction('comment',this)">
+              <span class="icon">💬</span>
+              <span class="check">✅</span>
+              <span class="lbl">КОММЕНТАРИЙ</span>
+            </a>
+          </div>
+
+          <!-- Идеи для комментария -->
+          <div class="yt-comment-section">
+            <div class="yt-comment-label">💡 Идеи для комментария — нажми чтобы скопировать</div>
+            <div class="yt-comment-ideas" id="comment-ideas"></div>
+            <a class="yt-open-comments" href="https://www.youtube.com/watch?v=oIBoA_MT_s8#comments" target="_blank" rel="noopener" onclick="markYtAction('comment',document.getElementById('yt-btn-comment'))">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              НАПИСАТЬ КОММЕНТАРИЙ НА YOUTUBE →
+            </a>
+          </div>
+
+          <!-- Прогресс действий -->
+          <div class="yt-progress-row" id="yt-progress-row">
+            <div class="yt-prog-item" id="prog-like">
+              <div class="prog-val" id="prog-like-val">—</div>
+              <div class="prog-lbl">Лайки</div>
+            </div>
+            <div class="yt-prog-item" id="prog-sub">
+              <div class="prog-val" id="prog-sub-val">—</div>
+              <div class="prog-lbl">Подписки</div>
+            </div>
+            <div class="yt-prog-item" id="prog-comment">
+              <div class="prog-val" id="prog-comment-val">—</div>
+              <div class="prog-lbl">Комменты YT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="social-section">
         <div class="comments-box">
-          <div class="comments-header">Комментарии <span id="comment-count-label">0</span></div>
+          <div class="comments-header">Комментарии на сайте <span id="comment-count-label">0</span></div>
           <div class="comment-form">
             <textarea id="comment-input" placeholder="Напишите комментарий..." maxlength="500"></textarea>
             <div class="comment-form-row"><button class="btn-comment" onclick="postComment()">Отправить</button></div>
@@ -262,8 +363,14 @@ td{padding:12px 14px;font-size:13px;}
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-label">Всего зрителей</div><div class="stat-value" id="stat-total">—</div><div class="stat-sub">уникальных аккаунтов</div></div>
         <div class="stat-card"><div class="stat-label">Досмотрели</div><div class="stat-value" id="stat-completed">—</div><div class="stat-sub">≥ 95% без перемоток</div></div>
+        <div class="stat-card"><div class="stat-label">Лайков на YT</div><div class="stat-value" id="stat-yt-likes">—</div><div class="stat-sub">поставили лайк</div></div>
+        <div class="stat-card"><div class="stat-label">Подписок с сайта</div><div class="stat-value" id="stat-yt-subs">—</div><div class="stat-sub">нажали подписку</div></div>
+      </div>
+      <div class="stats-grid" style="margin-top:-14px">
         <div class="stat-card"><div class="stat-label">Средний % просмотра</div><div class="stat-value" id="stat-avg">—</div><div class="stat-sub">по всем зрителям</div></div>
-        <div class="stat-card"><div class="stat-label">Комментариев</div><div class="stat-value" id="stat-comments">—</div><div class="stat-sub">всего написано</div></div>
+        <div class="stat-card"><div class="stat-label">Комментов YT</div><div class="stat-value" id="stat-yt-comments">—</div><div class="stat-sub">перешли писать</div></div>
+        <div class="stat-card"><div class="stat-label">Конверсия лайков</div><div class="stat-value" id="stat-like-conv">—</div><div class="stat-sub">из досмотревших</div></div>
+        <div class="stat-card"><div class="stat-label">Комментариев сайт</div><div class="stat-value" id="stat-comments">—</div><div class="stat-sub">всего написано</div></div>
       </div>
       <div class="admin-tabs">
         <button class="admin-tab active" onclick="switchAdminTab('viewers',this)">Зрители</button>
@@ -275,11 +382,13 @@ td{padding:12px 14px;font-size:13px;}
           <button class="filter-btn" onclick="filterTable('completed',this)">Досмотрели</button>
           <button class="filter-btn" onclick="filterTable('watching',this)">Смотрят</button>
           <button class="filter-btn" onclick="filterTable('seeked',this)">Перемотки</button>
+          <button class="filter-btn" onclick="filterTable('liked',this)">👍 Лайк YT</button>
+          <button class="filter-btn" onclick="filterTable('subbed',this)">🔔 Подписка YT</button>
           <input class="search-input" id="search-input" type="text" placeholder="Поиск по @username..." oninput="renderTable()"/>
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>#</th><th>Telegram</th><th>Статус</th><th>Просмотрено</th><th>Перемотки</th><th>Пауз</th><th>Начал</th><th>Обновлён</th></tr></thead>
+            <thead><tr><th>#</th><th>Telegram</th><th>Статус</th><th>Просмотрено</th><th>YT Действия</th><th>Перемотки</th><th>Пауз</th><th>Обновлён</th></tr></thead>
             <tbody id="admin-tbody"></tbody>
           </table>
           <div class="empty-state" id="empty-state" style="display:none"><div class="big">📭</div>Нет данных о просмотрах.</div>
@@ -298,9 +407,18 @@ td{padding:12px 14px;font-size:13px;}
 
 <script>
 // ══ CONFIG ══
-const VIDEO_ID       = 'oIBoA_MT_s8'; // YouTube Video ID
+const VIDEO_ID       = 'oIBoA_MT_s8';
 const REQUIRED_PCT   = 95;
-const ADMIN_PASSWORD = '22848';         // Смените пароль!
+const ADMIN_PASSWORD = '22848';
+
+// Идеи комментариев — меняй под свой контент
+const COMMENT_IDEAS = [
+  'Огонь видео! Лучший контент на канале 🔥',
+  'Спасибо за полезный материал, жду продолжения!',
+  'Давно искал такое объяснение, наконец-то нашёл 👍',
+  'Подписался, этот канал заслуживает больше просмотров',
+  'Смотрел не отрываясь, очень крутая подача материала',
+];
 
 // ══ SUPABASE ══
 const SB_URL = 'https://uvyqlfeavfwginumybzx.supabase.co';
@@ -333,6 +451,7 @@ let seekCount=0, pauseCount=0, lastTime=0, isPlaying=false, tickInterval=null;
 let overlayActive=false;
 let adminUnlocked=false, adminActiveTab='viewers', currentFilter='all';
 let allViewers=[], allComments=[];
+let ytActions = {like:false, sub:false, comment:false};
 
 // ══ NAV ══
 function showPage(name,btn){
@@ -352,24 +471,28 @@ async function startViewer(){
   document.getElementById('video-section').style.display='block';
   document.getElementById('greeting-title').textContent='Привет, @'+name+'!';
 
-  // Проверяем есть ли уже запись в Supabase
   const existing = await sb.get(`viewers?username=eq.${encodeURIComponent(currentUser)}&select=*`);
   if(existing && existing.length > 0 && existing[0].confirmed){
     document.getElementById('already-done').style.display='block';
+    // Restore YT actions state
+    if(existing[0].yt_liked) markYtAction('like', document.getElementById('yt-btn-like'), true);
+    if(existing[0].yt_subbed) markYtAction('sub', document.getElementById('yt-btn-sub'), true);
+    if(existing[0].yt_commented) markYtAction('comment', document.getElementById('yt-btn-comment'), true);
+    showYtBoost();
   }
 
-  // Создаём или обновляем запись
   await sb.post('viewers', {
     username: currentUser,
     started_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   });
 
+  renderCommentIdeas();
   loadYTPlayer();
   renderComments();
 }
 
-// ══ YOUTUBE ══
+// ══ YOUTUBE PLAYER ══
 function loadYTPlayer(){
   if(window.YT&&window.YT.Player){initPlayer();}
   else{const t=document.createElement('script');t.src='https://www.youtube.com/iframe_api';document.head.appendChild(t);window.onYouTubeIframeAPIReady=initPlayer;}
@@ -426,7 +549,9 @@ function checkCompletion(){
   const dur=Math.floor(player.getDuration());
   if(!dur)return;
   const pct=Math.round((watchedSecs.size/dur)*100);
-  if(pct>=REQUIRED_PCT)document.getElementById('confirm-btn').style.display='block';
+  if(pct>=REQUIRED_PCT){
+    document.getElementById('confirm-btn').style.display='block';
+  }
 }
 async function saveProgress(){
   if(!player||!currentUser)return;
@@ -448,6 +573,11 @@ async function confirmWatch(){
   document.getElementById('confirm-btn').style.display='none';
   document.getElementById('already-done').style.display='block';
   showToast('✓ Просмотр подтверждён!');
+  showYtBoost();
+}
+function showYtBoost(){
+  document.getElementById('yt-boost-block').style.display='block';
+  document.getElementById('yt-boost-block').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function setBadge(id,text,type){
   const el=document.getElementById(id);
@@ -457,6 +587,52 @@ function setBadge(id,text,type){
 document.addEventListener('keydown',e=>{
   if(overlayActive&&['Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.code))e.preventDefault();
 });
+
+// ══ YT BOOST ACTIONS ══
+function renderCommentIdeas(){
+  const box = document.getElementById('comment-ideas');
+  if(!box) return;
+  box.innerHTML = COMMENT_IDEAS.map((idea, i) => `
+    <div class="yt-comment-idea" onclick="copyIdea(this, ${i})">
+      <span class="idea-text">${esc(idea)}</span>
+      <span class="copy-icon">КОПИРОВАТЬ</span>
+    </div>
+  `).join('');
+}
+function copyIdea(el, idx){
+  navigator.clipboard.writeText(COMMENT_IDEAS[idx]).catch(()=>{});
+  el.querySelector('.copy-icon').textContent = '✓ СКОПИРОВАНО';
+  setTimeout(()=>{ el.querySelector('.copy-icon').textContent = 'КОПИРОВАТЬ'; }, 2000);
+  showToast('Текст скопирован — вставь на YouTube!');
+  // Auto-open YT comments after copy
+  setTimeout(()=>{
+    window.open(`https://www.youtube.com/watch?v=${VIDEO_ID}#comments`, '_blank');
+    markYtAction('comment', document.getElementById('yt-btn-comment'));
+  }, 800);
+}
+async function markYtAction(type, btn, silent=false){
+  if(!btn || btn.classList.contains('done')) return;
+  btn.classList.add('done');
+  ytActions[type] = true;
+  if(!silent && currentUser){
+    const patch = {};
+    if(type==='like') patch.yt_liked = true;
+    if(type==='sub') patch.yt_subbed = true;
+    if(type==='comment') patch.yt_commented = true;
+    patch.updated_at = new Date().toISOString();
+    await sb.patch(`viewers?username=eq.${encodeURIComponent(currentUser)}`, patch);
+    const labels = {like:'Лайк поставлен! 👍',sub:'Подписка оформлена! 🔔',comment:'Открываем комментарии... 💬'};
+    showToast(labels[type]||'');
+  }
+  updateYtStats();
+}
+function updateYtStats(){
+  const done = Object.values(ytActions).filter(Boolean).length;
+  // visual feedback on progress items — just glow if done
+  if(ytActions.like) document.getElementById('prog-like').classList.add('prog-done');
+  if(ytActions.sub) document.getElementById('prog-sub').classList.add('prog-done');
+  if(ytActions.comment) document.getElementById('prog-comment').classList.add('prog-done');
+}
 
 // ══ COMMENTS ══
 async function postComment(){
@@ -527,12 +703,25 @@ async function renderAdmin(){
 
   const completed=allViewers.filter(r=>r.confirmed).length;
   const avg=allViewers.length?Math.round(allViewers.reduce((s,r)=>s+(r.pct||0),0)/allViewers.length):0;
+  const ytLikes=allViewers.filter(r=>r.yt_liked).length;
+  const ytSubs=allViewers.filter(r=>r.yt_subbed).length;
+  const ytComments=allViewers.filter(r=>r.yt_commented).length;
+  const likeConv=completed>0?Math.round((ytLikes/completed)*100)+'%':'—';
 
   document.getElementById('stat-total').textContent=allViewers.length;
   document.getElementById('stat-completed').textContent=completed;
   document.getElementById('stat-avg').textContent=avg+'%';
   document.getElementById('stat-comments').textContent=allComments.length;
+  document.getElementById('stat-yt-likes').textContent=ytLikes;
+  document.getElementById('stat-yt-subs').textContent=ytSubs;
+  document.getElementById('stat-yt-comments').textContent=ytComments;
+  document.getElementById('stat-like-conv').textContent=likeConv;
   document.getElementById('admin-updated').textContent='Обновлено: '+new Date().toLocaleTimeString('ru');
+
+  // Update progress row labels
+  document.getElementById('prog-like-val').textContent=ytLikes||'0';
+  document.getElementById('prog-sub-val').textContent=ytSubs||'0';
+  document.getElementById('prog-comment-val').textContent=ytComments||'0';
 
   renderTable();
   if(adminActiveTab==='comments')renderAdminComments();
@@ -544,6 +733,8 @@ function renderTable(){
   if(currentFilter==='completed')records=records.filter(r=>r.confirmed);
   else if(currentFilter==='watching')records=records.filter(r=>!r.confirmed&&(r.pct||0)>0);
   else if(currentFilter==='seeked')records=records.filter(r=>r.seeks>0);
+  else if(currentFilter==='liked')records=records.filter(r=>r.yt_liked);
+  else if(currentFilter==='subbed')records=records.filter(r=>r.yt_subbed);
 
   const tbody=document.getElementById('admin-tbody');
   const empty=document.getElementById('empty-state');
@@ -554,7 +745,11 @@ function renderTable(){
     const pct=r.pct||0;
     const status=r.confirmed?`<span class="tag tag-done">✓ Досмотрел</span>`:pct>0?`<span class="tag tag-watch">▶ Смотрит</span>`:`<span class="tag">— Начал</span>`;
     const sk=r.seeks>0?`<span style="color:var(--danger)">${r.seeks}</span>`:`<span style="color:var(--accent2)">0</span>`;
-    const s=r.started_at?new Date(r.started_at).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    const ytActs = [
+      r.yt_liked ? '<span style="color:var(--accent2);font-size:13px">👍</span>' : '<span style="color:var(--muted);font-size:13px">👍</span>',
+      r.yt_subbed ? '<span style="color:var(--accent2);font-size:13px">🔔</span>' : '<span style="color:var(--muted);font-size:13px">🔔</span>',
+      r.yt_commented ? '<span style="color:var(--accent2);font-size:13px">💬</span>' : '<span style="color:var(--muted);font-size:13px">💬</span>',
+    ].join(' ');
     const u=r.updated_at?new Date(r.updated_at).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
     return `<tr>
       <td class="td-mono">${i+1}</td>
@@ -564,9 +759,9 @@ function renderTable(){
         <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:${pct>=95?'var(--accent2)':pct>=50?'var(--accent)':'var(--muted)'}">${pct}%</span>
         <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
       </td>
+      <td>${ytActs}</td>
       <td>${sk}</td>
       <td class="td-mono">${r.pauses||0}</td>
-      <td class="td-mono">${s}</td>
       <td class="td-mono">${u}</td>
     </tr>`;
   }).join('');
@@ -618,7 +813,6 @@ async function clearData(){
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 
-// Авто-обновление админки каждые 15 сек
 setInterval(()=>{
   if(document.getElementById('page-admin').classList.contains('active')&&adminUnlocked)renderAdmin();
 },15000);
