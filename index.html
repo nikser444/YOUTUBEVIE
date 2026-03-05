@@ -15,7 +15,6 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;}
 
-/* NAV */
 .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:200;}
 .nav-left{display:flex;align-items:center;gap:16px;}
 .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--accent);}
@@ -28,7 +27,6 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 
 .page{display:none;}.page.active{display:block;}
 
-/* FORMS */
 .input-group{margin-bottom:14px;text-align:left;}
 .input-group label{display:block;font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
 .input-group input,.input-group textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
@@ -38,7 +36,6 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .btn-primary{width:100%;background:var(--accent);color:#000;border:none;border-radius:8px;padding:12px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
 .btn-primary:hover{opacity:0.85;}
 
-/* LOGIN */
 .login-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:36px;max-width:420px;margin:70px auto;text-align:center;}
 .login-box h2{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:6px;}
 .login-box p{color:var(--muted);font-size:13px;margin-bottom:24px;}
@@ -46,7 +43,6 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .tg-input-wrap .tg-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--tg);pointer-events:none;}
 .tg-input-wrap input{padding-left:28px;}
 
-/* VIEWER */
 .viewer-wrap{max-width:860px;margin:0 auto;padding:36px 20px;}
 .viewer-header{margin-bottom:20px;}
 .viewer-header h1{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:2px;line-height:1;}
@@ -54,24 +50,11 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 
 .video-container{position:relative;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
 .video-container iframe{width:100%;aspect-ratio:16/9;display:block;}
-
-/* OVERLAY — скрыт по умолчанию, включается после Play */
-#player-overlay{
-  display:none;
-  position:absolute;top:0;left:0;right:0;bottom:0;
-  z-index:10;cursor:not-allowed;background:transparent;
-}
+#player-overlay{display:none;position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;cursor:not-allowed;background:transparent;}
 #player-overlay.active{display:block;}
-.overlay-tip{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  background:rgba(0,0,0,0.85);color:var(--accent);
-  font-family:'IBM Plex Mono',monospace;font-size:12px;
-  padding:8px 18px;border-radius:8px;border:1px solid var(--accent);
-  pointer-events:none;opacity:0;transition:opacity 0.3s;white-space:nowrap;
-}
+.overlay-tip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.85);color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:8px 18px;border-radius:8px;border:1px solid var(--accent);pointer-events:none;opacity:0;transition:opacity 0.3s;white-space:nowrap;}
 #player-overlay.active:hover .overlay-tip{opacity:1;}
 
-/* PROGRESS */
 .progress-wrap{margin-top:14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;}
 .progress-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .progress-label span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
@@ -89,7 +72,6 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 @keyframes pulse-in{from{transform:scale(0.95);opacity:0;}to{transform:scale(1);opacity:1;}}
 .already-done{margin-top:14px;background:rgba(0,255,170,0.08);border:1px solid var(--accent2);border-radius:8px;padding:14px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent2);}
 
-/* COMMENTS */
 .social-section{margin-top:24px;}
 .comments-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .comments-header{padding:14px 18px;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;}
@@ -113,7 +95,6 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .comment-text{font-size:13px;line-height:1.65;color:#ccc;}
 .no-comments{padding:32px;text-align:center;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;}
 
-/* ADMIN */
 .admin-wrap{max-width:1100px;margin:0 auto;padding:36px 20px;}
 .admin-login-screen{display:flex;align-items:center;justify-content:center;min-height:60vh;}
 .admin-login-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:40px;width:340px;text-align:center;}
@@ -166,6 +147,7 @@ td{padding:12px 14px;font-size:13px;}
 .empty-state .big{font-size:36px;margin-bottom:10px;opacity:0.3;}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--accent2);color:#000;padding:11px 18px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;transform:translateY(80px);opacity:0;transition:all 0.3s ease;z-index:999;}
 .toast.show{transform:translateY(0);opacity:1;}
+.loading{text-align:center;padding:20px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;}
 
 @media(max-width:700px){
   .stats-grid{grid-template-columns:repeat(2,1fr);}
@@ -222,15 +204,12 @@ td{padding:12px 14px;font-size:13px;}
         <h1 id="greeting-title">Привет!</h1>
         <p>Смотрите видео без перемоток. Кнопка подтверждения появится после просмотра.</p>
       </div>
-
       <div class="video-container">
         <div id="player"></div>
-        <!-- Overlay скрыт. Становится активным только после нажатия Play -->
         <div id="player-overlay">
           <div class="overlay-tip">⛔ Перемотка и пауза отключены</div>
         </div>
       </div>
-
       <div class="progress-wrap">
         <div class="progress-label">
           <span>Просмотрено</span>
@@ -243,10 +222,8 @@ td{padding:12px 14px;font-size:13px;}
           <div class="badge" id="badge-pauses"><span class="dot"></span> Пауз: 0</div>
         </div>
       </div>
-
       <button class="confirm-btn" id="confirm-btn" onclick="confirmWatch()">✓ ПОДТВЕРДИТЬ ПРОСМОТР</button>
       <div class="already-done" id="already-done" style="display:none">✓ Вы уже подтвердили просмотр этого видео</div>
-
       <div class="social-section">
         <div class="comments-box">
           <div class="comments-header">Комментарии <span id="comment-count-label">0</span></div>
@@ -279,14 +256,14 @@ td{padding:12px 14px;font-size:13px;}
     </div>
     <div id="admin-content" style="display:none">
       <div class="admin-header">
-        <div><h1>АНАЛИТИКА</h1><p id="admin-updated">Обновляется в реальном времени</p></div>
+        <div><h1>АНАЛИТИКА</h1><p id="admin-updated">Загрузка...</p></div>
         <button class="btn-danger" onclick="clearData()">Очистить данные</button>
       </div>
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-label">Всего зрителей</div><div class="stat-value" id="stat-total">0</div><div class="stat-sub">уникальных аккаунтов</div></div>
-        <div class="stat-card"><div class="stat-label">Досмотрели</div><div class="stat-value" id="stat-completed">0</div><div class="stat-sub">≥ 95% без перемоток</div></div>
-        <div class="stat-card"><div class="stat-label">Средний % просмотра</div><div class="stat-value" id="stat-avg">0%</div><div class="stat-sub">по всем зрителям</div></div>
-        <div class="stat-card"><div class="stat-label">Комментариев</div><div class="stat-value" id="stat-comments">0</div><div class="stat-sub">всего написано</div></div>
+        <div class="stat-card"><div class="stat-label">Всего зрителей</div><div class="stat-value" id="stat-total">—</div><div class="stat-sub">уникальных аккаунтов</div></div>
+        <div class="stat-card"><div class="stat-label">Досмотрели</div><div class="stat-value" id="stat-completed">—</div><div class="stat-sub">≥ 95% без перемоток</div></div>
+        <div class="stat-card"><div class="stat-label">Средний % просмотра</div><div class="stat-value" id="stat-avg">—</div><div class="stat-sub">по всем зрителям</div></div>
+        <div class="stat-card"><div class="stat-label">Комментариев</div><div class="stat-value" id="stat-comments">—</div><div class="stat-sub">всего написано</div></div>
       </div>
       <div class="admin-tabs">
         <button class="admin-tab active" onclick="switchAdminTab('viewers',this)">Зрители</button>
@@ -321,29 +298,43 @@ td{padding:12px 14px;font-size:13px;}
 
 <script>
 // ══ CONFIG ══
-const VIDEO_ID       = 'oIBoA_MT_s8'; // <-- ВСТАВЬТЕ СВОЙ YOUTUBE VIDEO ID
+const VIDEO_ID       = 'oIBoA_MT_s8'; // YouTube Video ID
 const REQUIRED_PCT   = 95;
-const ADMIN_PASSWORD = '22848';         // <-- СМЕНИТЕ ПАРОЛЬ АДМИНКИ
+const ADMIN_PASSWORD = '22848';         // Смените пароль!
 
-/*
-  КАК ЗАЛИТЬ НА GITHUB PAGES:
-  1. github.com → New repository → назовите: username.github.io
-  2. Загрузите этот файл как index.html (Add file → Upload files)
-  3. Settings → Pages → main → / (root) → Save
-  4. Через 1-2 минуты сайт готов!
-*/
+// ══ SUPABASE ══
+const SB_URL = 'https://uvyqlfeavfwginumybzx.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2eXFsZmVhdmZ3Z2ludW15Ynp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NTg2MDcsImV4cCI6MjA4ODIzNDYwN30.oh2zceSWQnjvDx739hpXFL3SMY9VkAy9tC_byNALE_U';
 
-const LS_V='wt_viewers', LS_C='wt_comments';
-const getData=()=>{try{return JSON.parse(localStorage.getItem(LS_V)||'{}')}catch{return{}}};
-const saveData=d=>localStorage.setItem(LS_V,JSON.stringify(d));
-const getComments=()=>{try{return JSON.parse(localStorage.getItem(LS_C)||'[]')}catch{return[]}};
-const saveComments=c=>localStorage.setItem(LS_C,JSON.stringify(c));
+const sb = {
+  async req(method, path, body){
+    const r = await fetch(SB_URL+'/rest/v1/'+path, {
+      method,
+      headers:{
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer '+SB_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': method==='POST' ? 'resolution=merge-duplicates,return=representation' : 'return=representation'
+      },
+      body: body ? JSON.stringify(body) : undefined
+    });
+    if(!r.ok){ console.error('Supabase error', r.status, await r.text()); return null; }
+    return r.json();
+  },
+  get: (path) => sb.req('GET', path),
+  post: (path, body) => sb.req('POST', path, body),
+  patch: (path, body) => sb.req('PATCH', path, body),
+  delete: (path) => sb.req('DELETE', path),
+};
 
+// ══ STATE ══
 let currentUser=null, player=null, watchedSecs=new Set();
 let seekCount=0, pauseCount=0, lastTime=0, isPlaying=false, tickInterval=null;
 let overlayActive=false;
 let adminUnlocked=false, adminActiveTab='viewers', currentFilter='all';
+let allViewers=[], allComments=[];
 
+// ══ NAV ══
 function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -352,20 +343,33 @@ function showPage(name,btn){
   if(name==='admin'&&adminUnlocked)renderAdmin();
 }
 
-function startViewer(){
+// ══ LOGIN ══
+async function startViewer(){
   let name=document.getElementById('username-input').value.trim().replace(/^@/,'');
   if(!name||name.length<2){showToast('Введите корректный @username');return;}
   currentUser='@'+name;
   document.getElementById('login-section').style.display='none';
   document.getElementById('video-section').style.display='block';
   document.getElementById('greeting-title').textContent='Привет, @'+name+'!';
-  const data=getData();
-  if(data[currentUser]?.confirmed){document.getElementById('already-done').style.display='block';}
-  updateUserRecord({name:currentUser,started:new Date().toISOString()});
+
+  // Проверяем есть ли уже запись в Supabase
+  const existing = await sb.get(`viewers?username=eq.${encodeURIComponent(currentUser)}&select=*`);
+  if(existing && existing.length > 0 && existing[0].confirmed){
+    document.getElementById('already-done').style.display='block';
+  }
+
+  // Создаём или обновляем запись
+  await sb.post('viewers', {
+    username: currentUser,
+    started_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  });
+
   loadYTPlayer();
   renderComments();
 }
 
+// ══ YOUTUBE ══
 function loadYTPlayer(){
   if(window.YT&&window.YT.Player){initPlayer();}
   else{const t=document.createElement('script');t.src='https://www.youtube.com/iframe_api';document.head.appendChild(t);window.onYouTubeIframeAPIReady=initPlayer;}
@@ -373,24 +377,22 @@ function loadYTPlayer(){
 function initPlayer(){
   player=new YT.Player('player',{
     videoId:VIDEO_ID,
-    playerVars:{rel:0,modestbranding:1},
+    playerVars:{rel:0,modestbranding:1,origin:window.location.origin},
     events:{onStateChange}
   });
 }
-
 function onStateChange(e){
   if(e.data===YT.PlayerState.PLAYING){
     isPlaying=true;
     setBadge('badge-watching','Смотрит','ok');
     if(!tickInterval)tickInterval=setInterval(tick,1000);
-    // Активируем overlay после первого нажатия Play
     if(!overlayActive){
       overlayActive=true;
       document.getElementById('player-overlay').classList.add('active');
     }
   }
   if(e.data===YT.PlayerState.PAUSED){
-    isPlaying=false;pauseCount++;
+    isPlaying=false; pauseCount++;
     setBadge('badge-watching','Пауза','');
     setBadge('badge-pauses','Пауз: '+pauseCount,'');
     saveProgress();
@@ -402,7 +404,6 @@ function onStateChange(e){
     saveProgress();checkCompletion();
   }
 }
-
 function tick(){
   if(!player||!isPlaying)return;
   const cur=Math.floor(player.getCurrentTime());
@@ -410,7 +411,6 @@ function tick(){
   if(cur-lastTime>3){
     seekCount++;
     setBadge('badge-seek','Перемоток: '+seekCount,'warn');
-    updateUserRecord({seeks:seekCount});
   } else {
     watchedSecs.add(cur);
   }
@@ -421,73 +421,71 @@ function tick(){
   if(cur%5===0)saveProgress();
   checkCompletion();
 }
-
 function checkCompletion(){
   if(!player)return;
   const dur=Math.floor(player.getDuration());
   if(!dur)return;
   const pct=Math.round((watchedSecs.size/dur)*100);
-  if(getData()[currentUser]?.confirmed)return;
   if(pct>=REQUIRED_PCT)document.getElementById('confirm-btn').style.display='block';
 }
-function saveProgress(){
+async function saveProgress(){
   if(!player||!currentUser)return;
   const dur=Math.floor(player.getDuration());
   const pct=dur>0?Math.round((watchedSecs.size/dur)*100):0;
-  updateUserRecord({pct:Math.min(pct,100),seeks:seekCount,pauses:pauseCount,lastSeen:new Date().toISOString()});
+  await sb.patch(`viewers?username=eq.${encodeURIComponent(currentUser)}`, {
+    pct: Math.min(pct,100),
+    seeks: seekCount,
+    pauses: pauseCount,
+    updated_at: new Date().toISOString()
+  });
 }
-function confirmWatch(){
-  updateUserRecord({confirmed:true,confirmedAt:new Date().toISOString()});
+async function confirmWatch(){
+  await sb.patch(`viewers?username=eq.${encodeURIComponent(currentUser)}`, {
+    confirmed: true,
+    confirmed_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  });
   document.getElementById('confirm-btn').style.display='none';
   document.getElementById('already-done').style.display='block';
   showToast('✓ Просмотр подтверждён!');
-}
-function updateUserRecord(fields){
-  const data=getData();
-  data[currentUser]=Object.assign(data[currentUser]||{name:currentUser},fields);
-  saveData(data);
 }
 function setBadge(id,text,type){
   const el=document.getElementById(id);
   el.className='badge'+(type?' '+type:'');
   el.innerHTML='<span class="dot"></span> '+text;
 }
-
-// Блокируем клавиатуру пока overlay активен
 document.addEventListener('keydown',e=>{
-  if(overlayActive&&['Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.code)){
-    e.preventDefault();
-  }
+  if(overlayActive&&['Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.code))e.preventDefault();
 });
 
-// COMMENTS
-function postComment(){
+// ══ COMMENTS ══
+async function postComment(){
   if(!currentUser){showToast('Сначала войдите!');return;}
   const text=document.getElementById('comment-input').value.trim();
   if(!text||text.length<2){showToast('Напишите комментарий!');return;}
-  const comments=getComments();
-  comments.unshift({id:Date.now(),name:currentUser,text,time:new Date().toISOString()});
-  saveComments(comments);
+  await sb.post('comments',{username:currentUser,text,created_at:new Date().toISOString()});
   document.getElementById('comment-input').value='';
   renderComments();
   showToast('Комментарий добавлен!');
 }
-function renderComments(){
-  const comments=getComments();
+async function renderComments(){
   const list=document.getElementById('comments-list');
+  list.innerHTML='<div class="loading">Загрузка...</div>';
+  const comments=await sb.get('comments?select=*&order=created_at.desc');
+  const viewers=await sb.get('viewers?select=username,confirmed');
+  const confirmedSet=new Set((viewers||[]).filter(v=>v.confirmed).map(v=>v.username));
   const lbl=document.getElementById('comment-count-label');
-  if(lbl)lbl.textContent=comments.length;
-  if(!comments.length){list.innerHTML='<div class="no-comments">Будьте первым! Оставьте комментарий.</div>';return;}
-  const data=getData();
+  if(lbl)lbl.textContent=(comments||[]).length;
+  if(!comments||!comments.length){list.innerHTML='<div class="no-comments">Будьте первым! Оставьте комментарий.</div>';return;}
   list.innerHTML=comments.map(c=>{
-    const init=(c.name||'@')[1]?.toUpperCase()||'T';
-    const t=new Date(c.time).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-    const verified=data[c.name]?.confirmed;
+    const init=(c.username||'@')[1]?.toUpperCase()||'T';
+    const t=new Date(c.created_at).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const verified=confirmedSet.has(c.username);
     return `<div class="comment-item">
       <div class="comment-avatar">${esc(init)}</div>
       <div class="comment-body">
         <div class="comment-meta">
-          <span class="comment-name">${esc(c.name)}</span>
+          <span class="comment-name">${esc(c.username)}</span>
           ${verified?'<span class="comment-verified">✓ досмотрел</span>':''}
           <span class="comment-time">${t}</span>
         </div>
@@ -497,7 +495,7 @@ function renderComments(){
   }).join('');
 }
 
-// ADMIN
+// ══ ADMIN ══
 function checkAdminPass(){
   const val=document.getElementById('admin-pass-input').value;
   if(val===ADMIN_PASSWORD){
@@ -518,39 +516,49 @@ function switchAdminTab(tab,btn){
   document.getElementById('admin-tab-comments').style.display=tab==='comments'?'block':'none';
   if(tab==='comments')renderAdminComments();
 }
-function renderAdmin(){
-  const data=getData(),records=Object.values(data);
-  const comments=getComments();
-  document.getElementById('stat-total').textContent=records.length;
-  document.getElementById('stat-completed').textContent=records.filter(r=>r.confirmed).length;
-  document.getElementById('stat-avg').textContent=records.length?Math.round(records.reduce((s,r)=>s+(r.pct||0),0)/records.length)+'%':'0%';
-  document.getElementById('stat-comments').textContent=comments.length;
+async function renderAdmin(){
+  document.getElementById('admin-updated').textContent='Загрузка...';
+  const [viewers,comments]=await Promise.all([
+    sb.get('viewers?select=*&order=updated_at.desc'),
+    sb.get('comments?select=*&order=created_at.desc')
+  ]);
+  allViewers=viewers||[];
+  allComments=comments||[];
+
+  const completed=allViewers.filter(r=>r.confirmed).length;
+  const avg=allViewers.length?Math.round(allViewers.reduce((s,r)=>s+(r.pct||0),0)/allViewers.length):0;
+
+  document.getElementById('stat-total').textContent=allViewers.length;
+  document.getElementById('stat-completed').textContent=completed;
+  document.getElementById('stat-avg').textContent=avg+'%';
+  document.getElementById('stat-comments').textContent=allComments.length;
   document.getElementById('admin-updated').textContent='Обновлено: '+new Date().toLocaleTimeString('ru');
+
   renderTable();
   if(adminActiveTab==='comments')renderAdminComments();
 }
 function renderTable(){
-  const data=getData();
-  let records=Object.values(data);
+  let records=[...allViewers];
   const search=(document.getElementById('search-input')?.value||'').toLowerCase();
-  if(search)records=records.filter(r=>r.name?.toLowerCase().includes(search));
+  if(search)records=records.filter(r=>r.username?.toLowerCase().includes(search));
   if(currentFilter==='completed')records=records.filter(r=>r.confirmed);
   else if(currentFilter==='watching')records=records.filter(r=>!r.confirmed&&(r.pct||0)>0);
   else if(currentFilter==='seeked')records=records.filter(r=>r.seeks>0);
+
   const tbody=document.getElementById('admin-tbody');
   const empty=document.getElementById('empty-state');
   if(!records.length){tbody.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
-  records.sort((a,b)=>new Date(b.lastSeen||b.started||0)-new Date(a.lastSeen||a.started||0));
+
   tbody.innerHTML=records.map((r,i)=>{
     const pct=r.pct||0;
     const status=r.confirmed?`<span class="tag tag-done">✓ Досмотрел</span>`:pct>0?`<span class="tag tag-watch">▶ Смотрит</span>`:`<span class="tag">— Начал</span>`;
     const sk=r.seeks>0?`<span style="color:var(--danger)">${r.seeks}</span>`:`<span style="color:var(--accent2)">0</span>`;
-    const s=r.started?new Date(r.started).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
-    const u=r.lastSeen?new Date(r.lastSeen).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    const s=r.started_at?new Date(r.started_at).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    const u=r.updated_at?new Date(r.updated_at).toLocaleString('ru',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
     return `<tr>
       <td class="td-mono">${i+1}</td>
-      <td class="td-tg">${esc(r.name||'—')}</td>
+      <td class="td-tg">${esc(r.username||'—')}</td>
       <td>${status}</td>
       <td style="min-width:130px">
         <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:${pct>=95?'var(--accent2)':pct>=50?'var(--accent)':'var(--muted)'}">${pct}%</span>
@@ -564,18 +572,17 @@ function renderTable(){
   }).join('');
 }
 function renderAdminComments(){
-  const comments=getComments();
-  const data=getData();
+  const confirmedSet=new Set(allViewers.filter(v=>v.confirmed).map(v=>v.username));
   const box=document.getElementById('admin-comments-list');
-  if(!comments.length){box.innerHTML='<div class="empty-state"><div class="big">💬</div>Комментариев пока нет.</div>';return;}
-  box.innerHTML=comments.map(c=>{
-    const t=new Date(c.time).toLocaleString('ru',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    const verified=data[c.name]?.confirmed;
+  if(!allComments.length){box.innerHTML='<div class="empty-state"><div class="big">💬</div>Комментариев пока нет.</div>';return;}
+  box.innerHTML=allComments.map(c=>{
+    const t=new Date(c.created_at).toLocaleString('ru',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const verified=confirmedSet.has(c.username);
     return `<div class="admin-comment-item">
-      <div style="width:36px;height:36px;border-radius:50%;background:rgba(34,158,217,0.15);border:1px solid rgba(34,158,217,0.3);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--tg);flex-shrink:0">${esc((c.name||'@T')[1]?.toUpperCase()||'T')}</div>
+      <div style="width:36px;height:36px;border-radius:50%;background:rgba(34,158,217,0.15);border:1px solid rgba(34,158,217,0.3);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--tg);flex-shrink:0">${esc((c.username||'@T')[1]?.toUpperCase()||'T')}</div>
       <div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">
-          <span style="font-weight:600;font-size:13px;color:var(--tg);font-family:'IBM Plex Mono',monospace">${esc(c.name)}</span>
+          <span style="font-weight:600;font-size:13px;color:var(--tg);font-family:'IBM Plex Mono',monospace">${esc(c.username)}</span>
           ${verified?'<span style="font-size:10px;color:var(--accent2);font-family:\'IBM Plex Mono\',monospace">✓ досмотрел</span>':''}
           <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)">${t}</span>
         </div>
@@ -585,10 +592,11 @@ function renderAdminComments(){
     </div>`;
   }).join('');
 }
-function deleteComment(id){
+async function deleteComment(id){
   if(!confirm('Удалить комментарий?'))return;
-  saveComments(getComments().filter(c=>c.id!==id));
-  renderAdminComments();renderComments();
+  await sb.delete(`comments?id=eq.${id}`);
+  renderAdmin();
+  renderComments();
   showToast('Комментарий удалён');
 }
 function filterTable(type,btn){
@@ -596,15 +604,24 @@ function filterTable(type,btn){
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');renderTable();
 }
-function clearData(){
-  if(!confirm('Удалить ВСЕ данные?'))return;
-  [LS_V,LS_C].forEach(k=>localStorage.removeItem(k));
-  renderAdmin();showToast('Все данные удалены');
+async function clearData(){
+  if(!confirm('Удалить ВСЕ данные из базы?'))return;
+  await Promise.all([
+    sb.delete('viewers?id=neq.00000000-0000-0000-0000-000000000000'),
+    sb.delete('comments?id=gt.0')
+  ]);
+  allViewers=[];allComments=[];
+  renderAdmin();
+  showToast('Все данные удалены');
 }
+
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
-setInterval(()=>{if(document.getElementById('page-admin').classList.contains('active')&&adminUnlocked)renderAdmin();},10000);
+
+// Авто-обновление админки каждые 15 сек
+setInterval(()=>{
+  if(document.getElementById('page-admin').classList.contains('active')&&adminUnlocked)renderAdmin();
+},15000);
 </script>
 </body>
 </html>
-
