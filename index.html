@@ -101,7 +101,8 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .comment-time{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
 .comment-verified{font-size:10px;color:var(--accent2);font-family:'IBM Plex Mono',monospace;}
 .comment-text{font-size:13px;line-height:1.65;color:#ccc;}
-.no-comments{padding:32px;text-align:center;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;}
+.seek-warning{margin-top:10px;background:rgba(255,59,59,0.1);border:1px solid var(--danger);border-radius:8px;padding:12px 16px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--danger);animation:fade-in 0.3s ease;}
+
 
 /* ADMIN */
 .admin-wrap{max-width:1100px;margin:0 auto;padding:36px 20px;}
@@ -238,6 +239,9 @@ td{padding:12px 14px;font-size:13px;}
 
       <button class="confirm-btn" id="confirm-btn" onclick="confirmWatch()">✓ ПОДТВЕРДИТЬ ПРОСМОТР</button>
       <div class="already-done" id="already-done" style="display:none">✓ Вы уже подтвердили просмотр этого видео</div>
+      <div class="seek-warning" id="seek-warning" style="display:none">
+        ⏩ Обнаружена перемотка — пропущенные секунды не засчитываются
+      </div>
 
       <!-- COMMENTS -->
       <div class="social-section">
@@ -418,7 +422,16 @@ function tick(){
   if(!player||!isPlaying)return;
   const cur=Math.floor(player.getCurrentTime());
   const dur=Math.floor(player.getDuration());
-  if(cur-lastTime>3){seekCount++;setBadge('badge-seek','Перемоток: '+seekCount,'warn');updateUserRecord({seeks:seekCount});}
+  if(cur-lastTime>3){
+    seekCount++;
+    setBadge('badge-seek','Перемоток: '+seekCount,'warn');
+    updateUserRecord({seeks:seekCount});
+    // Показать предупреждение
+    const w=document.getElementById('seek-warning');
+    w.style.display='block';
+    clearTimeout(window._seekWarnTimer);
+    window._seekWarnTimer=setTimeout(()=>w.style.display='none',4000);
+  }
   else{watchedSecs.add(cur);}
   lastTime=cur;
   const pct=dur>0?Math.round((watchedSecs.size/dur)*100):0;
