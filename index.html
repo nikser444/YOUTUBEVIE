@@ -26,7 +26,6 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .nav-tab{padding:7px 18px;border-radius:6px;border:none;background:transparent;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;}
 .nav-tab.active{background:var(--accent);color:#000;font-weight:600;}
 
-/* PAGES */
 .page{display:none;}.page.active{display:block;}
 
 /* FORMS */
@@ -55,10 +54,22 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 
 .video-container{position:relative;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
 .video-container iframe{width:100%;aspect-ratio:16/9;display:block;}
-.player-overlay{position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;cursor:not-allowed;background:transparent;display:none;}
-.player-overlay.active{display:block;}
-.overlay-tip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.82);color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:8px 16px;border-radius:8px;border:1px solid var(--accent);pointer-events:none;opacity:0;transition:opacity 0.3s;white-space:nowrap;}
-.player-overlay:hover .overlay-tip{opacity:1;}
+
+/* OVERLAY — скрыт по умолчанию, включается после Play */
+#player-overlay{
+  display:none;
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  z-index:10;cursor:not-allowed;background:transparent;
+}
+#player-overlay.active{display:block;}
+.overlay-tip{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:rgba(0,0,0,0.85);color:var(--accent);
+  font-family:'IBM Plex Mono',monospace;font-size:12px;
+  padding:8px 18px;border-radius:8px;border:1px solid var(--accent);
+  pointer-events:none;opacity:0;transition:opacity 0.3s;white-space:nowrap;
+}
+#player-overlay.active:hover .overlay-tip{opacity:1;}
 
 /* PROGRESS */
 .progress-wrap{margin-top:14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;}
@@ -73,7 +84,6 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .badge.warn{border-color:var(--danger);color:var(--danger);background:rgba(255,59,59,0.07);}
 .badge .dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
 
-/* CONFIRM */
 .confirm-btn{display:none;width:100%;margin-top:14px;background:var(--accent2);color:#000;border:none;border-radius:8px;padding:14px;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;cursor:pointer;transition:all 0.2s;animation:pulse-in 0.4s ease;}
 .confirm-btn:hover{opacity:0.85;transform:translateY(-1px);}
 @keyframes pulse-in{from{transform:scale(0.95);opacity:0;}to{transform:scale(1);opacity:1;}}
@@ -101,8 +111,7 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .comment-time{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
 .comment-verified{font-size:10px;color:var(--accent2);font-family:'IBM Plex Mono',monospace;}
 .comment-text{font-size:13px;line-height:1.65;color:#ccc;}
-.seek-warning{margin-top:10px;background:rgba(255,59,59,0.1);border:1px solid var(--danger);border-radius:8px;padding:12px 16px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--danger);animation:fade-in 0.3s ease;}
-
+.no-comments{padding:32px;text-align:center;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;}
 
 /* ADMIN */
 .admin-wrap{max-width:1100px;margin:0 auto;padding:36px 20px;}
@@ -168,7 +177,6 @@ td{padding:12px 14px;font-size:13px;}
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="nav-left">
     <div class="nav-logo">WATCHTRACK</div>
@@ -189,11 +197,8 @@ td{padding:12px 14px;font-size:13px;}
   </div>
 </nav>
 
-<!-- VIEWER PAGE -->
 <div id="page-viewer" class="page active">
   <div class="viewer-wrap">
-
-    <!-- LOGIN -->
     <div id="login-section">
       <div class="login-box">
         <h2>Войдите</h2>
@@ -212,7 +217,6 @@ td{padding:12px 14px;font-size:13px;}
       </div>
     </div>
 
-    <!-- VIDEO -->
     <div id="video-section" style="display:none">
       <div class="viewer-header">
         <h1 id="greeting-title">Привет!</h1>
@@ -221,7 +225,10 @@ td{padding:12px 14px;font-size:13px;}
 
       <div class="video-container">
         <div id="player"></div>
-        <div class="player-overlay" id="player-overlay" style="display:none"><div class="overlay-tip">⛔ Перемотка и пауза отключены</div></div>
+        <!-- Overlay скрыт. Становится активным только после нажатия Play -->
+        <div id="player-overlay">
+          <div class="overlay-tip">⛔ Перемотка и пауза отключены</div>
+        </div>
       </div>
 
       <div class="progress-wrap">
@@ -239,37 +246,25 @@ td{padding:12px 14px;font-size:13px;}
 
       <button class="confirm-btn" id="confirm-btn" onclick="confirmWatch()">✓ ПОДТВЕРДИТЬ ПРОСМОТР</button>
       <div class="already-done" id="already-done" style="display:none">✓ Вы уже подтвердили просмотр этого видео</div>
-      <div class="seek-warning" id="seek-warning" style="display:none">
-        ⏩ Обнаружена перемотка — пропущенные секунды не засчитываются
-      </div>
 
-      <!-- COMMENTS -->
       <div class="social-section">
         <div class="comments-box">
-          <div class="comments-header">
-            Комментарии <span id="comment-count-label">0</span>
-          </div>
+          <div class="comments-header">Комментарии <span id="comment-count-label">0</span></div>
           <div class="comment-form">
             <textarea id="comment-input" placeholder="Напишите комментарий..." maxlength="500"></textarea>
-            <div class="comment-form-row">
-              <button class="btn-comment" onclick="postComment()">Отправить</button>
-            </div>
+            <div class="comment-form-row"><button class="btn-comment" onclick="postComment()">Отправить</button></div>
           </div>
           <div class="comments-list" id="comments-list">
             <div class="no-comments">Будьте первым! Оставьте комментарий.</div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- ADMIN PAGE -->
 <div id="page-admin" class="page">
   <div class="admin-wrap">
-
-    <!-- ADMIN LOGIN -->
     <div id="admin-login-screen" class="admin-login-screen">
       <div class="admin-login-box">
         <h2>АДМИНКА</h2>
@@ -282,30 +277,21 @@ td{padding:12px 14px;font-size:13px;}
         <button class="btn-primary" onclick="checkAdminPass()">Войти</button>
       </div>
     </div>
-
-    <!-- ADMIN CONTENT -->
     <div id="admin-content" style="display:none">
       <div class="admin-header">
-        <div>
-          <h1>АНАЛИТИКА</h1>
-          <p id="admin-updated">Обновляется в реальном времени</p>
-        </div>
+        <div><h1>АНАЛИТИКА</h1><p id="admin-updated">Обновляется в реальном времени</p></div>
         <button class="btn-danger" onclick="clearData()">Очистить данные</button>
       </div>
-
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-label">Всего зрителей</div><div class="stat-value" id="stat-total">0</div><div class="stat-sub">уникальных аккаунтов</div></div>
         <div class="stat-card"><div class="stat-label">Досмотрели</div><div class="stat-value" id="stat-completed">0</div><div class="stat-sub">≥ 95% без перемоток</div></div>
         <div class="stat-card"><div class="stat-label">Средний % просмотра</div><div class="stat-value" id="stat-avg">0%</div><div class="stat-sub">по всем зрителям</div></div>
         <div class="stat-card"><div class="stat-label">Комментариев</div><div class="stat-value" id="stat-comments">0</div><div class="stat-sub">всего написано</div></div>
       </div>
-
       <div class="admin-tabs">
         <button class="admin-tab active" onclick="switchAdminTab('viewers',this)">Зрители</button>
         <button class="admin-tab" onclick="switchAdminTab('comments',this)">Комментарии</button>
       </div>
-
-      <!-- VIEWERS TABLE -->
       <div id="admin-tab-viewers">
         <div class="filter-bar">
           <button class="filter-btn active" onclick="filterTable('all',this)">Все</button>
@@ -316,33 +302,17 @@ td{padding:12px 14px;font-size:13px;}
         </div>
         <div class="table-wrap">
           <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Telegram</th>
-                <th>Статус</th>
-                <th>Просмотрено</th>
-                <th>Перемотки</th>
-                <th>Пауз</th>
-                <th>Начал</th>
-                <th>Обновлён</th>
-              </tr>
-            </thead>
+            <thead><tr><th>#</th><th>Telegram</th><th>Статус</th><th>Просмотрено</th><th>Перемотки</th><th>Пауз</th><th>Начал</th><th>Обновлён</th></tr></thead>
             <tbody id="admin-tbody"></tbody>
           </table>
-          <div class="empty-state" id="empty-state" style="display:none">
-            <div class="big">📭</div>Нет данных о просмотрах.
-          </div>
+          <div class="empty-state" id="empty-state" style="display:none"><div class="big">📭</div>Нет данных о просмотрах.</div>
         </div>
       </div>
-
-      <!-- COMMENTS TABLE -->
       <div id="admin-tab-comments" style="display:none">
         <div class="admin-comments-list" id="admin-comments-list">
           <div class="empty-state"><div class="big">💬</div>Комментариев пока нет.</div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
@@ -363,19 +333,17 @@ const ADMIN_PASSWORD = '22848';         // <-- СМЕНИТЕ ПАРОЛЬ АД�
   4. Через 1-2 минуты сайт готов!
 */
 
-// ══ STORAGE ══
 const LS_V='wt_viewers', LS_C='wt_comments';
 const getData=()=>{try{return JSON.parse(localStorage.getItem(LS_V)||'{}')}catch{return{}}};
 const saveData=d=>localStorage.setItem(LS_V,JSON.stringify(d));
 const getComments=()=>{try{return JSON.parse(localStorage.getItem(LS_C)||'[]')}catch{return[]}};
 const saveComments=c=>localStorage.setItem(LS_C,JSON.stringify(c));
 
-// ══ STATE ══
 let currentUser=null, player=null, watchedSecs=new Set();
 let seekCount=0, pauseCount=0, lastTime=0, isPlaying=false, tickInterval=null;
+let overlayActive=false;
 let adminUnlocked=false, adminActiveTab='viewers', currentFilter='all';
 
-// ══ NAV ══
 function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -384,7 +352,6 @@ function showPage(name,btn){
   if(name==='admin'&&adminUnlocked)renderAdmin();
 }
 
-// ══ LOGIN ══
 function startViewer(){
   let name=document.getElementById('username-input').value.trim().replace(/^@/,'');
   if(!name||name.length<2){showToast('Введите корректный @username');return;}
@@ -399,24 +366,43 @@ function startViewer(){
   renderComments();
 }
 
-// ══ YOUTUBE ══
 function loadYTPlayer(){
   if(window.YT&&window.YT.Player){initPlayer();}
   else{const t=document.createElement('script');t.src='https://www.youtube.com/iframe_api';document.head.appendChild(t);window.onYouTubeIframeAPIReady=initPlayer;}
 }
 function initPlayer(){
-  player=new YT.Player('player',{videoId:VIDEO_ID,playerVars:{rel:0,modestbranding:1},events:{onStateChange}});
+  player=new YT.Player('player',{
+    videoId:VIDEO_ID,
+    playerVars:{rel:0,modestbranding:1},
+    events:{onStateChange}
+  });
 }
+
 function onStateChange(e){
   if(e.data===YT.PlayerState.PLAYING){
     isPlaying=true;
     setBadge('badge-watching','Смотрит','ok');
-    document.getElementById('player-overlay').style.display='block';
     if(!tickInterval)tickInterval=setInterval(tick,1000);
+    // Активируем overlay после первого нажатия Play
+    if(!overlayActive){
+      overlayActive=true;
+      document.getElementById('player-overlay').classList.add('active');
+    }
   }
-  if(e.data===YT.PlayerState.PAUSED){isPlaying=false;pauseCount++;setBadge('badge-watching','Пауза','');setBadge('badge-pauses','Пауз: '+pauseCount,'');saveProgress();}
-  if(e.data===YT.PlayerState.ENDED){isPlaying=false;clearInterval(tickInterval);tickInterval=null;setBadge('badge-watching','Завершено','ok');saveProgress();checkCompletion();}
+  if(e.data===YT.PlayerState.PAUSED){
+    isPlaying=false;pauseCount++;
+    setBadge('badge-watching','Пауза','');
+    setBadge('badge-pauses','Пауз: '+pauseCount,'');
+    saveProgress();
+  }
+  if(e.data===YT.PlayerState.ENDED){
+    isPlaying=false;
+    clearInterval(tickInterval);tickInterval=null;
+    setBadge('badge-watching','Завершено','ok');
+    saveProgress();checkCompletion();
+  }
 }
+
 function tick(){
   if(!player||!isPlaying)return;
   const cur=Math.floor(player.getCurrentTime());
@@ -425,13 +411,9 @@ function tick(){
     seekCount++;
     setBadge('badge-seek','Перемоток: '+seekCount,'warn');
     updateUserRecord({seeks:seekCount});
-    // Показать предупреждение
-    const w=document.getElementById('seek-warning');
-    w.style.display='block';
-    clearTimeout(window._seekWarnTimer);
-    window._seekWarnTimer=setTimeout(()=>w.style.display='none',4000);
+  } else {
+    watchedSecs.add(cur);
   }
-  else{watchedSecs.add(cur);}
   lastTime=cur;
   const pct=dur>0?Math.round((watchedSecs.size/dur)*100):0;
   document.getElementById('pct-display').textContent=pct+'%';
@@ -439,6 +421,7 @@ function tick(){
   if(cur%5===0)saveProgress();
   checkCompletion();
 }
+
 function checkCompletion(){
   if(!player)return;
   const dur=Math.floor(player.getDuration());
@@ -469,12 +452,15 @@ function setBadge(id,text,type){
   el.className='badge'+(type?' '+type:'');
   el.innerHTML='<span class="dot"></span> '+text;
 }
+
+// Блокируем клавиатуру пока overlay активен
 document.addEventListener('keydown',e=>{
-  const inV=document.getElementById('video-section')?.style.display!=='none';
-  if(inV&&['Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.code))e.preventDefault();
+  if(overlayActive&&['Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.code)){
+    e.preventDefault();
+  }
 });
 
-// ══ COMMENTS ══
+// COMMENTS
 function postComment(){
   if(!currentUser){showToast('Сначала войдите!');return;}
   const text=document.getElementById('comment-input').value.trim();
@@ -511,7 +497,7 @@ function renderComments(){
   }).join('');
 }
 
-// ══ ADMIN ══
+// ADMIN
 function checkAdminPass(){
   const val=document.getElementById('admin-pass-input').value;
   if(val===ADMIN_PASSWORD){
@@ -533,7 +519,7 @@ function switchAdminTab(tab,btn){
   if(tab==='comments')renderAdminComments();
 }
 function renderAdmin(){
-  const data=getData(), records=Object.values(data);
+  const data=getData(),records=Object.values(data);
   const comments=getComments();
   document.getElementById('stat-total').textContent=records.length;
   document.getElementById('stat-completed').textContent=records.filter(r=>r.confirmed).length;
@@ -602,21 +588,18 @@ function renderAdminComments(){
 function deleteComment(id){
   if(!confirm('Удалить комментарий?'))return;
   saveComments(getComments().filter(c=>c.id!==id));
-  renderAdminComments();
-  renderComments();
+  renderAdminComments();renderComments();
   showToast('Комментарий удалён');
 }
 function filterTable(type,btn){
   currentFilter=type;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderTable();
+  btn.classList.add('active');renderTable();
 }
 function clearData(){
-  if(!confirm('Удалить ВСЕ данные (просмотры и комментарии)?'))return;
+  if(!confirm('Удалить ВСЕ данные?'))return;
   [LS_V,LS_C].forEach(k=>localStorage.removeItem(k));
-  renderAdmin();
-  showToast('Все данные удалены');
+  renderAdmin();showToast('Все данные удалены');
 }
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
